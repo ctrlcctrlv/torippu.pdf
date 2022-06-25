@@ -1,0 +1,293 @@
+\documentclass[lualatex, tate, landscape, paper=a4]{jlreq}
+\usepackage[unicode=true]{hyperref}  % 読み込んでいなければページは縦書き
+\usepackage{minted}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{booktabs}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=OliveGreen,
+    filecolor=Fuchsia,      
+    urlcolor=Blue,
+    }
+\usepackage{graphicx}
+\usepackage[no-math]{luatexja-fontspec}
+\usepackage[deluxe,expert,noto-otf]{luatexja-preset}
+\usepackage{pxrubrica}
+\usepackage{emoji}
+\newcommand{\blockquote}[1]{\noindent\begin{center}\fcolorbox{white}{blue!15!gray!15}{\begin{minipage}{0.9\linewidth}\center\begin{minipage}{0.8\linewidth}{{\hspace{-1em}}\gtfamily{\textbf{{{「}}}\small{#1}\bfseries{{{」}}}}}\end{minipage}\smallbreak\end{minipage}}\end{center}}
+\newcommand{\yokoA}[1]{\hbox{\yoko \resizebox{1em}{0.8em}{#1}}}
+\newcommand{\yokoB}[1]{\hspace{0.1em}\hbox{\yoko \resizebox{1em}{0.66em}{#1}}\hspace{0.1em}}
+\newcommand{\yokoY}[1]{\hbox{\yoko {\small #1}}\hspace{0.3em}}
+\newcommand{\yokoN}[1]{\hbox{\yoko {#1}}\hspace{0.2em}}
+%\newcommand{\yokoA}[1]{\hbox{\yoko #1}}
+%\newcommand{\yokoB}[1]{\hbox{\yoko #1}}
+\newcommand{\kopipesan}{\hbox{\yoko ★}\hbox{コピペ}}
+\title{\vfill\bfseries 【洋風 及び 和風】\\キャップ・トリップ%・名横\yokoA{ID}・名横国旗
+\\{\small そして、それらの}\\種類・歴史・算出方式・算法　一覧}
+\author{フレッド･ブレンナン\\（\hbox{\yoko ★}コピペ）}
+\date{\footnote{メール：{\ttfamily<\href{mailto:copypaste@kittens.ph}{copypaste@kittens.ph}>}\\コンピュータ組版、デジタル字体、フォント・フォーマット(\yokoB{OTF}と\yokoB{TTF}専)などの国際的な専門家\\　※　\\匿名巨大掲示板・（和・際・米）ネット文化などの国際的専門家\\　※　\\日本語、エスペラント語、スペイン語、タガログ語、英語を喋れる人\\　※　\\最終に、\hbox{\yoko 8}ちゃんねる創設者}\footnote{もう頑なにならずにウィキで僕の名前を正しく表記してくれよ}\\\vspace{2em}\today\\新ジャージー州　大西洋岸都\footnote{{見つかれないの場合は、勇気のない人は「Atlantic City」と「アトランティック・シティ」を書きている。そんな人たちとは違って、{\resizebox{2em}{!}{\yoko {\tiny{$\sigma(ﾟ∀ﾟ )$}}}} \hbox{\yoko ﾎ\hspace{-0.7em}ﾞ\hspace{-0.76em}ｸ}の玉はおおきい。}}}
+\begin{document}
+{
+\maketitle
+\vfill
+{\bfseries 注意：\yokoB{CC}表示 - 改変禁止(\yokoB{BY}・\yokoB{ND})\yokoB{4.0}国際ライセンスの下で利用可能です。}
+}
+\eject
+\tableofcontents
+\part{２ちゃんねるトリップ【◆・◇】}
+\section{洋風トリップとは何？}
+洋風トリップ（替名：トリップ\footnote{英語 \hbox{\yoko trip}}・トリップコード\footnote{英語 \hbox{\yoko \hspace{1em}tripcode\hspace{1em}}}米国風トリップ／$\approx$ 国際風トリップ･トリップコード）とは、4chan (\hbox{\yoko 4}ちゃん、四つ葉ちゃんねる) や 8chan (\yokoB{8ch}、\hbox{\yoko 8}ちゃんねる、ワトキンス組盗品名：\hbox{\yoko 8}君・\hbox{\yoko 8}\yokoB{kun})  などの匿名巨大掲示板に於いて、投稿（すなわち カキコ）時にユーザー名横に表示される文字列と数字のこと。
+
+この文字列の生成方法には様々なものがあり、生成方法は利用者と管理者の双方に微妙な影響を与えます。
+
+ここでは、主なトリップコードの生成方法について簡単にお話しします。
+
+\section{２ちゃんねる風トリップ}
+洋風のトリップを説明する前に、「和風」トリップ\footnote{トリップの元祖にはかなり無粋な言葉なので、滅多に本書では曖昧さをなくすためにのみ使用。滅多にするべき言葉。}の機能を再確認しておく必要があります。
+
+\newcommand{\FOXsan}{\hbox{\yoko ★}\yokoB{FOX}}
+現在でも国際的に最も広く使われているトリップ生成の方法は、2ちゃんねるの初期のプログラマー、\FOXsan（\ruby{中尾}{なか|お}\ruby{佳}{よし}\ruby{宏}{ひろ}）が書いた次のスクリプトに基づいています。
+
+\subsection{\FOXsan の\ruby{パール}{P|er|l}・スクリプト}
+\begin{minted}{perl}
+$tripkey = "#istrip";  # トリップキー文字列（# 付き）
+$tripkey = substr $tripkey, 1;
+$salt = substr $tripkey . "H.", 1, 2;
+$salt =~ s/[^\.-z]/\./g;
+$salt =~ tr/:;<=>?@[\\]^_`/A-Ga-f/;
+$trip = crypt $tripkey, $salt;
+$trip = substr $trip, -10;
+$trip = "◆" . $trip;
+print $trip, "\n";
+# $
+\end{minted}
+もし、\FOXsan のコードを説明する欲しい人がある、以下の一行一行を注釈付きのパール・スクリプトをご覧ください。
+
+\subsubsection{\kopipesan の（一行一行）注釈付き版}
+\begin{minted}{perl}
+#!/usr/bin/perl
+# ２ちゃんねる掲示板風トリップ取得（★コピペの注釈付き版）.pl
+# (2ch_tripcode_annotated_ja.pl)
+#
+# © ２０２０年〜２０２２年 フレドリック　R　ブレンナン
+#
+# ★ＦＯＸ（中尾嘉宏）の公開ドメインコードを基にしています。
+# これも公開ドメインコードである。
+
+# トリップキーを標準入力から取得する
+$tripkey = <STDIN>;
+chomp $tripkey;
+if (substr($tripkey, 0, 1) ne "#") {
+  print STDERR "トリップキーは#で始まる必要があります" && exit 1
+};
+# 「＃」削除化
+$tripkey = substr $tripkey, 1;
+
+#*#*# ソルト生成化 #*#*#
+
+# パスワードから２文字目と３文字目をソルトとして使用する。
+# 例：「salt」から「st」となる。
+$salt = substr $tripkey . "H.", 1, 2;
+# アスキー範囲外の文字をすべて０ｘ２Ｅ(ピリオド)に変換する。
+$salt =~ s/[^\.-z]/\./g;
+# 以下の文字をABCDEFGabcdefに置き換える。
+# :;<=>?@[\]^_`
+# 例えば、#istripの場合はsaltは"st"のままである。しかし、#:_`の場合はsaltは"ef"になる。
+$salt =~ tr/:;<=>?@[\\]^_`/A-Ga-f/;
+
+print STDERR "注: ソルトは $salt\n";
+
+#*#*# トリップコードを生成する #*#*#
+
+# crypt()を実行する。これはＤＥＳベースの一方向ハッシュである。
+# このパール版では、トリップキーの最初の８文字（！）のみを考慮する。
+$trip = crypt $tripkey, $salt;
+
+if (length($tripkey) > 8) {
+    my $extra = substr $tripkey, 8;
+    my $err = "警告: パスワードは長すぎ。$extra は無視された、ハッシュ結果でない。\n";
+    print STDERR $err;
+}
+
+# ハッシュの最後の10文字を取得する
+$trip = substr $trip, -10;
+
+# 先頭に◆を付ける。4chanでは!が使われる。
+$trip = "◆" . $trip;
+
+# 標準出力に出力する
+print STDOUT "トリップ: ", $trip, "\n";
+
+exit 0
+\end{minted}
+
+出力の例えば：
+
+\begin{verbatim}
+fred@mapache# perl ２ちゃんねる掲示板風トリップ取得（★コピペの注釈付き版）.pl
+#istrip
+注: ソルトは st
+トリップ: ◆/WG5qp963c
+fred@mapache# perl ２ちゃんねる掲示板風トリップ取得（★コピペの注釈付き版）.pl
+#:_`
+注: ソルトは ef
+トリップ: ◆rZgPfaS/mo
+fred@mapache# perl ２ちゃんねる掲示板風トリップ取得（★コピペの注釈付き版）.pl
+#wakuwaku
+注: ソルトは ak
+トリップ: ◆tSdCM0v21w
+fred@mapache# perl ２ちゃんねる掲示板風トリップ取得（★コピペの注釈付き版）.pl
+#wakuwaku``
+注: ソルトは ak
+警告: パスワードは長すぎ。`` は無視された、ハッシュ結果でない。
+トリップ: ◆tSdCM0v21w
+\end{verbatim}
+
+\eject
+\subsection{技術分析}
+
+前節の\FOXsan の形式は約\yokoB{20}年前のものであり、現代のコンピュータはそのトリップを容易に破れる。さらに、トリップの最初の\hbox{\yoko 8}文字だけが重要で、パールではそれがすべての暗号とみなされるため、さらなる欠陥がある。
+
+一般消費者向けパソコンに搭載されている現代の\yokoB{GPU}では、\hbox{\yoko 2}ちゃんねる形式のトリップコードは数日で解読できてしまいます。\hbox{\yoko 8}君のロン・ワトキンスでさえ、これを認めています。
+
+そのため、欧米では２ちゃんねるの枠を超えた、より強力なハッシュようにが求められる。そこから、いわゆる「洋風トリップ」の旅が始まった。
+
+しかし、その旅に出る前に、キャップの話をしなければなりません。
+
+\eject
+\part{２ちゃんねる風キャップ【★】}
+\section{２ちゃんねるキャップとは何？}
+元々はトリップコードが解読されやすく、２ちゃんねるのスタッフになりすました荒らしが発生したことから考案された暗号の一種。
+
+しかし、これみたいのキャップ型トリップは、「ボランティア」\footnote{２ちゃんねるの所謂「ボランティア」は、現実には、スタッフ。少なくとも\yokoY{{\tiny 2015}}年時点では{\bfseries 全員有給}。\\追伸　所謂「★スライム」の実名は{\bfseries 恵菅原}。}やニュー速板の「レポーター」など、運営とは関係のないユーザーにもどんどん拡大されていった。
+
+掲示板は、たとえ巨大ウェッブ掲示板であっても、専用ブラウザ\footnote{すなわち、専ブラ}の存在により、技術的にはほとんど変化しないことは、技術志向の高い日本人なら誰でも知っていることである。
+
+ただ、これは欧米ではありえないことだ。欧米では、文字掲示板であれ画像掲示板であれ、掲示板はその利用者向け窓口（フロントエンド）を完全に管理している。まれに非公認の携帯アプリやパソコンアプリが登場すると、急に（非文献化）APIが変更させる。ここには「\yokoB{dat}」形式ファイルは存在しないし、４ちゃんと８君のように異なる掲示板間の交換を期待することもできない。
+
+また、氾濫、破壊、荒らしに使われるような「\yokoB{bbs}・\yokoB{cgi}」も存在しない。
+
+なぜ\yokoB{bbs}・\yokoB{cgi}にそんなことを言うのか？なぜなら、欧米には\yokoB{BBX}や\yokoB{BBQ}\footnote{２つのブラックリスト。}もないからだ。\yokoY{2016}年に２ちゃんねるのテクニカルディレクターになったとき、社内システムのあまりの違いに衝撃を受け、なぜ２ちゃんねるが安全で使えるのかさえ理解するのに時間がかかりました。
+
+その理由を知りたくありませんか？
+
+理由は{\bfseries 人種差別}である。
+
+２ちゃんねるは外国人ユーザーを{\bfseries 全て}排除しています。
+
+つまり、日本に割り当てられている（比較的）小さな\yokoA{IP}アドレス空間{\bfseries のみ}に関心を持てばよいのです。欧米の掲示板より問題が簡単ことは、残念ながら２ちゃんねるでは、社内手続きや\yokoA{IT}セキュリティが客観的に悪くなることにつながります。そして、こうした手順の悪化は、より強いハッシュある新トリップ種類を作るのではなく、管理者以外の人にキャップが渡されることに繋がったのです。
+
+\eject
+\section*{疑問：「人種差別から、キャップ」は本当じゃなくて本当は「外国人荒らしから、キャップ」んだ}
+いや。賢女★みつをの引用を読もう↓
+
+\blockquote{
+    \mcfamily
+    \blockquote{\mcfamily\bfseries 荒らしだから規制}
+
+これが毎回、ただの運営の都合で規制する時の言い訳。\yokoN{1}番の荒らしは運営が飼ってる\yokoB{K5}・\yokoB{F9}だし} 
+
+歴史的に、ひろゆきの管理下でも、つまり\yokoY{2014}年以前でも、大部分の米\yokoB{ISP}を禁止されている。
+
+初期の２ちゃんねるには、海外の荒らしが書き込んでいたことは間違いないでしょう。自分の記憶では【ニップを荒らす】とは\yokoA{/b/}のゲームを出った。いわゆるゲームの目的は、２ちゃんねる又はふたば☆ちゃんねるに行っていた、荒らした。ですけども、そのスレの種類では多くの外国人（僕を含め）達が、所謂「ゲーム提案」に嫌悪感を抱いていたことを思い出します。
+
+「{\gtfamily ２ちゃんねるの管理者達に外国人全員を追放するの口実をやるな！馬鹿}」と投稿した。\footnote{結局無駄だったけどね}
+
+仮に荒らしが起きたとしても、差別的な政策であることに変わりはない。最終的にはテック問題が簡単になりすぎてたので、２ちゃんねるの\yokoA{IT}インフラ・セキュリティに不備が出るようになりました。理由はどうであれば紛れもない歴史的事実なのだ。
+
+\part{次世代和風トリップ【\emoji{large-blue-diamond}】}
+続きの前に、ある問題を処理しなければならない。トリップコードの分岐の歴史を書いている以上、前に書いた文章はすべて事実であるが、あくまで\yokoY{2010}年時点の話である。
+
+※\yokoY{2010}年頃（日本語版ウィキペディアでは\yokoY{2009}年とされているが、私には疑うべき理由が残っている）、\yokoN{2}ちゃんねるに「\yokoN{12}桁トリップコード」と呼ばれる一種のトリップコードが出現した。
+
+※\yokoY{2003}年の\yokoN{4}ちゃんねる開設から\yokoY{2010}年までの\yokoN{7}年間で、欧米がどのように乖離したかについては、すぐに説明するが、簡単に言えば、「\yokoN{12}桁トリップコード」、そして、ひろゆきの真２ちゃんねろ\footnote{すなわち、\yokoB{sc}、\url{2ch.sc}}トリップコードが、どのように違うかについて説明すればよいだろう。
+
+\eject
+\section{２ちゃんえる\yokoB{sc}風トリップ【\#\$】、\yokoB{12}桁トリップ【\$】、生キー【\#\#】など}
+次世代和風トリップの技術的な詳細を一つ一つ本文で列挙することはせず、表で示す↓\footnote{\yokoB{sc}のトリップは、全ハッシュを使用しない。\yokoB{19}ビット目から\yokoB{108}ビット目までの\yokoB{90}ビットのみ使用。モナトリップ（ジム２ちゃんねるのトリップ）は、先頭\yokoB{64}ビットのみ使用。}
+
+\hspace{1em}
+
+\begin{center}
+    {\hfill\hbox{\yoko
+\begin{tabular}{|c|c|c|c|c|c|}
+    \hline
+    名前 & 元サイト & 年（約） & ハッシュ方法 & 入力 & 出力 \\
+    \hline
+    生キー & ２ちゃんねる & 不明 & DES & 16桁の十六進数 & 10桁のbase64\\
+    12桁トリップ & ２ちゃんねる & 2010 & SHA1 & ≥12桁のSJIS & 12桁のbase64\\
+    15桁トリップ & ２ちゃんねる.sc & 2014 & SHA1 & ≥11桁のSJIS & 15桁のbase64\\
+    カタカナトリップ（\#\$｡）& ２ちゃんねる.sc & 2014 & SHA1 & ≥11桁のSJIS & 15桁の半角カタカナ\\
+    \hline
+\end{tabular}
+}\hfill}
+\end{center}
+
+技術的な詳細は、\ruby{{ラスト}・{クレート}}{{Rust}||{crate}} \href{https://docs.rs/tripcode/latest/tripcode/}{tripcodes} を参照してください。
+
+\part{国際風キャップ}
+国際的には、キャップは決まった外観を持たず、掲示板によって異なる。しかし、和風キャップに比べると非常に華やかなものが多いようです。
+
+例えば、\yokoN{8}君のキャップは色を変えます。\yokoN{4}ちゃんでは、ロゴがキャップの目印として使われます（例：\emoji{four-leaf-clover} Administrator）。
+
+以前の\yokoN{8}君では、キャップされた投稿は自動的に\yokoB{Gnu}\yokoB{PG}署名されたものまでありました。ロン\footnote{所謂\yokoB{CM}}の暗号文盲を考えると、この必要な機能が引退したのは当然です。
+
+海外の掲示板では、巨大掲示板では管理者の投稿は珍しく、熱心なユーザーしか見ることができないことを考えると、色を変えたり、小さなロゴを入れたりといった気を引く機能があることも納得がいきます。したがって「特別なイベント」であるため、気が散るのはこのためだとも言えるでしょう。
+
+\part{洋風トリップ【＃】}
+すべての事前情報が説明されたところで、洋風トリップ式の扱いに入ります。通常の洋風トリップは元の２ちゃんねると同じなので、再解説はしない。その代わり、日本には存在しない最初のトリップから説明する。
+\section{いわゆる「セキュア」（安全な）トリップ【＃＃】}
+スタッフ以外のキャップがないために、トリップコードユーザーのなりすましの問題に直面したとき、それは恐ろしいことだと思われた。
+
+当時、日本ではこのテック問題の進展が見られないため、トリ漏れを逃げるために、\yokoN{4}ちゃんの管理人であるクリストファー・プール氏は、「\yokoB{\#\#}」という接頭語を共有しながらも、日本にはない新しいシステムを考案したのである。
+
+セキュア・トリップがいつ導入されたかは不明である。3つの主要な専門機関（ビッブ・アノン\footnote{すなわち、bibanon。意味：司書アノン}または彼の大名無し図書館\footnote{英語：Bibliotheca Anonoma}、ルーミア名無し\footnote{英語：Nameless Rūmia}、よつば史研究会\footnote{英語：Yotsuba Society}）はいずれも年表でその導入について触れていない。
+
+ですけど、絶対にセキュア・トリップは古いことです。\yokoY{2008}年で、誰かがこの投稿を書き込んだ：
+
+\blockquote{A secure tripcode can be generated by placing two octothorpes in the [Name] field, as opposed to one as with a normal tripcode (ex. ``User\#\#password''). Secure tripcodes use a secret key file on the server to help obscure their password. The previous example would display ``User !!Oo43raDvH61'' after being posted.\footnote{出所：\href{https://desuarchive.org/a/thread/11157921/\#11157957}{ですアーカイブ、４ちゃん、アニメ板、スレ号11157921}}}
+
+\blockquote{通常のトリップが1回に＃に対し「セキュア」トリップの方に、【名前】フィールドに\yokoN{\sffamily 2}回に＃（例：「\hbox{\sffamily User\#\#password}」）を入力することで生成される。セキュア・トリップは、サーバー上の秘密鍵ファイルを使用して、パスワードをほとんど解読不可能になる。先ほどの例では投稿後に「\hbox{\sffamily User !!!Oo43raDvH61}」と表示される。}
+
+つまり、いわゆる安全なトリップは誤用であり、セキュリティはもはやトリップにではなく、サーバー、秘密の暗号ソルト、ハッシュ関数にあるのである。
+
+これには様々な影響があります。これはいわゆる「Ｑアノン」で使われているタイプのトリップコードで、私は何年も前にロン・ワトキンスに乗っ取られたと固く信じています。安全なトリップの仕組みにより、少なくとも\yokoY{2022}年時点では彼が乗っ取ったという事実が今判明しているのです。
+
+なぜわかるのでしょうか？この種のトリップコードの弱点は、たとえ一つのウェブサイト上であっても、それが無常であることです。
+
+同じ入力で他のセキュア・トリップコードが変更された場合、すべてのセキュア・トリップコードが無効になり、変更します。
+
+秘密暗号ソルトのトリップは、和風トリップとは異なり、（秘密のソルトは本質的に秘密であるために）セキュア・トリップを検証不可能にするためソルト更新によって掲示板全体のトリップが無効になった後に古いセキュア・トリップが投稿されたことに注目することが改ざんを証明する唯一の方法となる。
+\eject
+\appendix
+\part{付録等}
+\part*{本書の転載などライセンスについて}
+\section{\yokoA{NPO}法人 \yokoA{CC}・\yokoA{BY}・\yokoA{ND} ライセンスについて}
+{\bfseries 注意}　\yokoB{\small\ruby{{NPO}}{エヌピーオー}}法人\ruby{{クリエイティブ}}{Ｃ}・\ruby{{コモンズ}}{Ｃ}（\yokoB{CC}）表示(\yokoB{BY})-改変(\yokoB{ND})禁止\yokoA{4.0}国際ライセンスの下で利用可能です。ライセンス全文の日本語訳は\href{https://creativecommons.org/licenses/by-nd/4.0/deed.ja}{こちら}をご覧ください。以下は、\yokoB{NPO}法人クリエイティブ・コモンズによる法的拘束力のない簡単な要約です。
+
+{\bfseries 共有} どのようなメディアやフォーマットでも資料を複製したり、再配布できます。
+\begin{itemize}\item 営利目的も含め、どのような目的でも。
+
+\item    あなたがライセンスの条件に従っている限り、許諾者がこれらの自由を取り消すことはできません。
+\end{itemize} 
+
+\begin{center}
+  \bfseries
+あなたの従うべき条件は以下の通りです。 
+\end{center}
+\begin{itemize}
+  \item {\bfseries 表示}\\あなたは 適切なクレジットを表示し、ライセンスへのリンクを提供し、変更があったらその旨を示さなければなりません。これらは合理的であればどのような方法で行っても構いませんが、許諾者があなたやあなたの利用行為を支持していると示唆するような方法は除きます。 
+
+  \item {\bfseries 改変禁止}\\あなたがこの資料を リミックスし、改変し、あるいはこの資料をベースに新しい作品を作った場合、あなたは改変された資料を頒布してはなりません。
+  \item {\bfseries 追加的な制約は課せません}\\あなたは、このライセンスが他の者に許諾することを法的に制限するようないかなる法的規定も技術的手段 も適用してはなりません。
+\end{itemize}
+\subsection*{未所属表明}
+
+著者は\yokoB{NPO}法人\ruby{{クリエイティブ}}{Ｃ}・\ruby{{コモンズ}}{Ｃ}とは一切関係ありません。
+
+\subsection*{印刷物を御覧へ}
+印刷物の配布・販売などは行っていませんが、ライセンスの全文を取得するためにコンピュータには以下の\yokoB{URL}を手動でご自由に入力して貰います。\footnote{
+  {\ttfamily
+<https://creativecommons.org/licenses/by-nd/4.0/deed.ja>
+}}
+\end{document}
